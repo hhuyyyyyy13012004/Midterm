@@ -1,6 +1,6 @@
-# 🛒 HUTECH Store - Product Management System (MERN Stack)
+# 🛒 HUTECH Store - Product Management System
 
-A comprehensive product management project built with the **MERN Stack** architecture. This system supports full CRUD operations, real-time search, category filtering, and a modern UI with smooth page transitions.
+A comprehensive product management project. This system supports full CRUD operations, real-time search, category filtering, and a modern UI with smooth page transitions.
 
 ## 🌟 Key Features
 
