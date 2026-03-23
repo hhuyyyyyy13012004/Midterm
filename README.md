@@ -2,8 +2,6 @@
 
 A comprehensive product management project built with the **MERN Stack** architecture. This system supports full CRUD operations, real-time search, category filtering, and a modern UI with smooth page transitions.
 
-[Image of MERN stack architecture diagram]
-
 ## 🌟 Key Features
 
 - **Product Management:** Create, Read (View Details), Update, and Delete products.
