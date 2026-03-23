@@ -1,16 +1,18 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // --- 1. KẾT NỐI MONGODB ---
-const MONGO_URI = "mongodb://127.0.0.1:27017/product_management";
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/product_management";
 
 mongoose
   .connect(MONGO_URI)
