@@ -1,107 +1,102 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../api";
+import AnimatedPage from "./AnimatedPage"; // <-- Nhập component hiệu ứng
 
 function ProductDetail() {
-  const { id } = useParams(); // Lấy ID sản phẩm từ URL
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Hàm gọi API lấy chi tiết 1 sản phẩm
     const fetchProductDetail = async () => {
       try {
         const response = await api.get(`/products/${id}`);
         setProduct(response.data);
       } catch (err) {
-        setError("Không tìm thấy sản phẩm hoặc có lỗi xảy ra từ Backend.");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProductDetail();
   }, [id]);
 
-  // Xử lý các trạng thái hiển thị (Loading, Error)
-  if (loading) return <div>Đang tải thông tin chi tiết... ⏳</div>;
-  if (error)
-    return <div style={{ color: "red", fontWeight: "bold" }}>{error}</div>;
-  if (!product) return <div>Không có dữ liệu.</div>;
+  if (loading)
+    return (
+      <AnimatedPage>
+        <div className="text-center py-20 text-gray-500 animate-pulse">
+          Đang tải...
+        </div>
+      </AnimatedPage>
+    );
 
-  // Render giao diện chi tiết
+  if (!product)
+    return (
+      <AnimatedPage>
+        <div className="text-center py-20 text-red-500">
+          Sản phẩm không tồn tại.
+        </div>
+      </AnimatedPage>
+    );
+
   return (
-    <div
-      style={{
-        border: "1px solid #ddd",
-        padding: "20px",
-        borderRadius: "8px",
-        maxWidth: "500px",
-        margin: "0 auto",
-      }}
-    >
-      <h2 style={{ textAlign: "center" }}>Chi tiết sản phẩm</h2>
+    <AnimatedPage>
+      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+        <div className="flex flex-col md:flex-row">
+          {/* Cột Trái: Ảnh */}
+          <div className="md:w-1/2 h-96 md:h-auto overflow-hidden">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover transform hover:scale-105 transition duration-500"
+            />
+          </div>
 
-      <img
-        src={product.image}
-        alt={product.name}
-        style={{
-          width: "100%",
-          height: "auto",
-          borderRadius: "8px",
-          marginBottom: "15px",
-          objectFit: "cover",
-        }}
-      />
+          {/* Cột Phải: Thông tin */}
+          <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+            <span className="text-blue-600 font-bold tracking-widest uppercase text-xs mb-2">
+              {product.category}
+            </span>
+            <h2 className="text-4xl font-black text-gray-900 mb-4 leading-tight">
+              {product.name}
+            </h2>
 
-      <h3>{product.name}</h3>
-      <p style={{ fontSize: "16px" }}>
-        <strong>Danh mục:</strong> {product.category}
-      </p>
-      <p style={{ fontSize: "16px", color: "#28a745" }}>
-        <strong>Giá:</strong> ${product.price}
-      </p>
-      <p style={{ fontSize: "16px" }}>
-        <strong>Số lượng tồn kho:</strong> {product.stock}
-      </p>
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-3xl font-bold text-gray-900">
+                ${product.price}
+              </span>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  product.stock > 0
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {product.stock > 0
+                  ? `Còn ${product.stock} sản phẩm`
+                  : "Hết hàng"}
+              </span>
+            </div>
 
-      {/* Nút điều hướng */}
-      <div
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          gap: "10px",
-          justifyContent: "center",
-        }}
-      >
-        <Link
-          to="/"
-          style={{
-            textDecoration: "none",
-            color: "#007bff",
-            border: "1px solid #007bff",
-            padding: "8px 15px",
-            borderRadius: "4px",
-          }}
-        >
-          ⬅ Quay lại danh sách
-        </Link>
-        <Link
-          to={`/edit/${product.id}`}
-          style={{
-            textDecoration: "none",
-            color: "white",
-            backgroundColor: "#ffc107",
-            padding: "8px 15px",
-            borderRadius: "4px",
-          }}
-        >
-          Sửa sản phẩm
-        </Link>
+            <div className="space-y-4 border-t pt-6">
+              <Link
+                to={`/edit/${product.id}`}
+                className="block w-full text-center bg-blue-600 text-white py-4 rounded-2xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
+              >
+                Chỉnh sửa thông tin
+              </Link>
+              <Link
+                to="/"
+                className="block w-full text-center text-gray-500 font-medium py-2 hover:text-gray-800 transition-colors"
+              >
+                ⬅ Quay lại trang chủ
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </AnimatedPage>
   );
 }
 
