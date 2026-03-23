@@ -88,7 +88,7 @@ Open your browser at: `http://localhost:5173`
 ## 👤 Author Information
 
 - **Full Name:** Nguyễn Hoàng Huy
-- **Student ID:** 4556090012
+- **Student ID:** 2280601179
 - **University:** Ho Chi Minh City University of Technology (HUTECH)
 - **Major:** Software Engineering
 
